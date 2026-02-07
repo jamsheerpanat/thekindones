@@ -137,7 +137,7 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-ink-200/60 bg-white/70 px-4 py-3 text-sm text-ink-500">
-              Select 7 featured items in Admin > Menu to populate this spinner.
+              Select 7 featured items in Admin &gt; Menu to populate this spinner.
             </div>
           )}
 
