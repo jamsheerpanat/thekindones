@@ -4,7 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 
-const ITEMS = [
+type DockItem = {
+  label: string;
+  href: string;
+  match?: string;
+};
+
+const ITEMS: DockItem[] = [
   { label: "Home", href: "/" },
   { label: "Menu", href: "/menu" },
   { label: "Cart", href: "/cart" },
