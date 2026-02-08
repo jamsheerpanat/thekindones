@@ -23,7 +23,7 @@ export const sendWelcomeEmail = async ({
     // If your domain isn't verified, this call will fail for customers.
     // Switching to onboarding@resend.dev as it's the only one allowed for unverified accounts.
     const { data, error } = await resend.emails.send({
-      from: "The Kind Ones <onboarding@resend.dev>",
+      from: "The Kind Ones <hello@octolabs.cloud>",
       to: [email],
       subject: "Welcome to The Kind Ones!",
       html: `
@@ -70,7 +70,7 @@ export const sendOrderConfirmation = async ({
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "The Kind Ones <onboarding@resend.dev>",
+      from: "The Kind Ones <hello@octolabs.cloud>",
       to: [email],
       subject: `Order Confirmed #${orderId.slice(-6).toUpperCase()}`,
       html: `
