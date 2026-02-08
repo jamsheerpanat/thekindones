@@ -176,7 +176,7 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
 
           {/* Pointer */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 filter drop-shadow-md">
-            <svg width="24" height="24" md:width="32" md:height="32" viewBox="0 0 24 24" fill="currentColor" className="text-ink-900">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="text-ink-900 w-6 h-6 md:w-8 md:h-8">
               <path d="M12 22L7 12H17L12 22Z" transform="rotate(180 12 12)" />
             </svg>
           </div>
