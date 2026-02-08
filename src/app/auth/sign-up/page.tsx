@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 // --- Icons ---
@@ -158,6 +159,7 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -183,12 +185,19 @@ export default function SignUpPage() {
         throw new Error(data?.error || "Unable to create account.");
       }
 
-      await signIn("credentials", {
+      const signResult = await signIn("credentials", {
         email,
         password,
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
       });
+
+      if (signResult?.error) {
+        // If sign-in fails after successful registration, send to sign-in page
+        router.push("/auth/sign-in?registered=true");
+      } else {
+        router.push("/");
+        router.refresh();
+      }
     } catch (err: any) {
       setError(err.message);
       setLoading(false);
@@ -207,10 +216,10 @@ export default function SignUpPage() {
 
         <div className="relative z-10">
           <Link href="/" className="inline-block">
-             <div className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center border border-white/20">
-               {/* Simplified Logo Placeholder */}
-               <span className="text-2xl font-bold text-white">k.</span> 
-             </div>
+            <div className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center border border-white/20">
+              {/* Simplified Logo Placeholder */}
+              <span className="text-2xl font-bold text-white">k.</span>
+            </div>
           </Link>
         </div>
 

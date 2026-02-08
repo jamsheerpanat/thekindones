@@ -56,14 +56,14 @@ export async function POST(request: Request) {
       }
     });
 
-    // Send welcome email (non-blocking for registration)
+    // Send welcome email (fully backgrounded/non-blocking)
     if (user.email) {
-      sendWelcomeEmail({
-        email: user.email,
-        name: user.name || "Foodie"
-      }).catch(err => {
-        console.error("Delayed welcome email error:", err);
-      });
+      setTimeout(() => {
+        sendWelcomeEmail({
+          email: user.email!,
+          name: user.name || "Foodie"
+        }).catch(err => console.error("Background email error:", err));
+      }, 0);
     }
 
     return NextResponse.json({ ok: true, userId: user.id });
