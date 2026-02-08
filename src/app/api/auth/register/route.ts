@@ -56,11 +56,13 @@ export async function POST(request: Request) {
       }
     });
 
-    // Send welcome email
+    // Send welcome email (non-blocking for registration)
     if (user.email) {
-      await sendWelcomeEmail({
+      sendWelcomeEmail({
         email: user.email,
         name: user.name || "Foodie"
+      }).catch(err => {
+        console.error("Delayed welcome email error:", err);
       });
     }
 

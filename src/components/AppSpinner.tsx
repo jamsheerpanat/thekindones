@@ -59,15 +59,13 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
     const winningIndex = Math.floor(Math.random() * MAX_ITEMS);
     setSelectedIndex(winningIndex);
 
-    // Calculate rotation to land this item at the top.
-    // To land index i at top, we need to rotate so that index i is at -90deg or 270deg?
-    // Let's assume item 0 is at top initially.
-    // To bring item i to top, we rotate by - (i * segmentAngle).
-    // Add extra spins for effect.
+    // To land index i at top, we rotate by - (i * segmentAngle + segmentAngle / 2).
+    // Adding segmentAngle/2 correctly centers the item in the wedge.
     const extraSpins = 5;
-    const baseTarget = -(winningIndex * segmentAngle);
-    // Add some random offset within the segment to make it look natural
-    const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.6);
+    const baseTarget = -(winningIndex * segmentAngle + segmentAngle / 2);
+
+    // Random offset within the slice to make it look feel natural but stay within bounds
+    const randomOffset = (Math.random() - 0.5) * (segmentAngle * 0.4);
 
     const targetRotation = baseTarget - (360 * extraSpins) + randomOffset;
 
@@ -142,19 +140,25 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
 
             {/* Separator Lines & Items */}
             {wheelItems.map((item, index) => {
-              const angle = (360 / MAX_ITEMS) * index;
+              const segmentAngle = 360 / MAX_ITEMS;
+              const lineAngle = segmentAngle * index;
+              const itemAngle = lineAngle + (segmentAngle / 2); // Center items in the wedges
               return (
-                <div
-                  key={index}
-                  className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-white/60 origin-bottom"
-                  style={{ transform: `translateX(-50%) rotate(${angle}deg)` }}
-                >
+                <div key={index}>
+                  {/* Line */}
+                  <div
+                    className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-white/40 origin-bottom"
+                    style={{ transform: `translateX(-50%) rotate(${lineAngle}deg)` }}
+                  />
                   {/* Item Icon */}
                   <div
-                    className="absolute top-3 md:top-4 left-1/2 -translate-x-1/2"
-                    style={{ transform: `translateX(-50%) rotate(${-angle}deg)` }}
+                    className="absolute top-0 left-1/2 w-8 h-1/2 origin-bottom flex justify-center pt-3 md:pt-4"
+                    style={{ transform: `translateX(-50%) rotate(${itemAngle}deg)` }}
                   >
-                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white shadow-md p-1 flex items-center justify-center ring-1 ring-black/5">
+                    <div
+                      className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white shadow-md p-1 flex items-center justify-center ring-1 ring-black/5"
+                      style={{ transform: `rotate(${-itemAngle}deg)` }} // Keep upright
+                    >
                       {item?.image ? (
                         <Image src={item.image} alt="item" width={40} height={40} className="rounded-full object-cover w-full h-full" />
                       ) : (
