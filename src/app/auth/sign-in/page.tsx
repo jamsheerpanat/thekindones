@@ -43,14 +43,14 @@ export default function SignInPage() {
           <div className="mt-6 grid gap-3">
             <button
               className="btn btn-outline"
-              onClick={() => signIn("google")}
+              onClick={() => signIn("google", { callbackUrl: "/tko" })}
               type="button"
             >
               Continue with Google
             </button>
             <button
               className="btn btn-outline"
-              onClick={() => signIn("github")}
+              onClick={() => signIn("github", { callbackUrl: "/tko" })}
               type="button"
             >
               Continue with GitHub

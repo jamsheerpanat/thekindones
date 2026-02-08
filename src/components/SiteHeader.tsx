@@ -154,7 +154,7 @@ export const SiteHeader = () => {
                 </div>
               ) : (
                 <button
-                  onClick={() => signIn()}
+                  onClick={() => signIn(undefined, { callbackUrl: "/tko" })}
                   className="hidden md:flex h-10 px-6 items-center justify-center rounded-full bg-ink-900 text-white text-[13px] font-bold tracking-wide hover:bg-ink-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Sign In
@@ -221,7 +221,7 @@ export const SiteHeader = () => {
               {status !== "authenticated" ? (
                 <button
                   onClick={() => {
-                    signIn();
+                    signIn(undefined, { callbackUrl: "/tko" });
                     setMobileMenuOpen(false);
                   }}
                   className="w-full btn btn-primary py-5 text-lg shadow-xl shadow-ink-900/20"
