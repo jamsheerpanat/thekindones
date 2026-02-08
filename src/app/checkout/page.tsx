@@ -408,7 +408,7 @@ export default function CheckoutPage() {
                         </p>
                       </div>
                       <p className="text-xs text-ink-500 mt-1 line-clamp-1 font-medium">
-                        {item.modifiers.length > 0 ? item.modifiers.map(m => m.name).join(", ") : "Original"}
+                        {item.modifiers.length > 0 ? item.modifiers.map(m => m.label).join(", ") : "Original"}
                       </p>
                     </div>
                   </div>
