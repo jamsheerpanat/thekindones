@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -120,6 +120,7 @@ model Promo {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
+
 model HeroSettings {
   id          String   @id @default("hero-main")
   title       String   @default("Order in minutes")
