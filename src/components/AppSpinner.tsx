@@ -7,7 +7,7 @@ import type { CardProduct } from "@/lib/menu-helpers";
 import { useCart } from "@/lib/cart-context";
 
 const SPIN_MS = 3800;
-const SESSION_KEY = "thekindones-spinner-seen-v3"; // Version bump to force show
+const SESSION_KEY = "thekindones-spinner-seen-v5"; // Version bump to force show
 const MAX_ITEMS = 8; // Increased slightly for better look
 
 export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
@@ -27,7 +27,7 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
     const seen = sessionStorage.getItem(SESSION_KEY);
     if (!seen) {
       // Small delay for smooth entrance
-      const timer = setTimeout(() => setVisible(true), 1500);
+      const timer = setTimeout(() => setVisible(true), 800);
       return () => clearTimeout(timer);
     }
   }, [items]);

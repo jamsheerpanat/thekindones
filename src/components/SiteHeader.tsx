@@ -30,7 +30,7 @@ export const SiteHeader = () => {
   }, []);
 
   // Hide header on mobile for the menu page (custom mobile view there)
-  const hideOnMobile = pathname.startsWith("/menu");
+  const hideOnMobile = pathname === "/menu";
 
   return (
     <>
@@ -52,7 +52,7 @@ export const SiteHeader = () => {
           {/* Center: Navigation */}
           <nav className="hidden lg:flex items-center gap-1.5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             {NAV_ITEMS.map((item) => {
-              const active = pathname.startsWith(item.href);
+              const active = pathname === item.href;
               return (
                 <Link
                   key={item.href}

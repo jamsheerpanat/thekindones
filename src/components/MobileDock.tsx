@@ -45,32 +45,34 @@ export const MobileDock = () => {
 
   return (
     <div
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[50] md:hidden w-[90%] max-w-sm"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[50] md:hidden w-[85%] max-w-[320px]"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="bg-white/90 backdrop-blur-xl rounded-[2rem] border border-white shadow-2xl shadow-ink-900/10 px-2 py-2 flex items-center justify-between ring-1 ring-black/5">
+      <div className="bg-white/90 backdrop-blur-xl rounded-[1.75rem] border border-white shadow-2xl shadow-ink-900/10 px-1.5 py-1.5 flex items-center justify-between ring-1 ring-black/5">
         {ITEMS.map((item) => {
           const active = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`relative flex flex-col items-center justify-center gap-1 h-16 flex-1 rounded-2xl transition-all duration-300 ${active
-                  ? "bg-ink-900 text-brand-50"
-                  : "text-ink-400 hover:text-ink-600 active:scale-90"
+              className={`relative flex flex-col items-center justify-center gap-0.5 h-14 flex-1 rounded-2xl transition-all duration-300 ${active
+                ? "bg-ink-900 text-brand-50 shadow-lg"
+                : "text-ink-400 hover:text-ink-600 active:scale-90"
                 }`}
             >
               <div className="relative">
-                {item.icon}
+                <div className={active ? "scale-90" : "scale-100"}>
+                  {item.icon}
+                </div>
                 {item.label === "Cart" && cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 h-4 w-4 bg-brand-500 text-white text-[9px] font-black rounded-full flex items-center justify-center ring-2 ring-white animate-pulse">
+                  <span className="absolute -top-1.5 -right-1.5 h-3.5 w-3.5 bg-brand-500 text-white text-[8px] font-black rounded-full flex items-center justify-center ring-2 ring-white animate-pulse">
                     {cartCount}
                   </span>
                 )}
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
+              <span className="text-[9px] font-bold uppercase tracking-tight">{item.label}</span>
               {active && (
-                <div className="absolute -bottom-1 w-1 h-1 bg-brand-500 rounded-full" />
+                <div className="absolute bottom-1 w-1 h-1 bg-brand-500 rounded-full" />
               )}
             </Link>
           );
