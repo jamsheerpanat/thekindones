@@ -233,5 +233,3 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
     </div>
   );
 };
-  );
-};
