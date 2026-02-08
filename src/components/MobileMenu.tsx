@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { CardProduct } from "@/lib/menu-helpers";
 import { formatPrice } from "@/lib/utils";
@@ -242,8 +243,8 @@ export const MobileMenu = ({
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold transition-all ${active
-                    ? "bg-ink-900 text-white shadow-lg"
-                    : "bg-white text-ink-500 border border-ink-100 shadow-sm"
+                  ? "bg-ink-900 text-white shadow-lg"
+                  : "bg-white text-ink-500 border border-ink-100 shadow-sm"
                   }`}
               >
                 {category}
