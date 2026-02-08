@@ -105,7 +105,7 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function CheckoutPage() {
-  const { items, summary } = useCart();
+  const { items, summary, clear } = useCart();
   const [method, setMethod] = useState<"delivery" | "pickup">("delivery");
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cash">("card");
   const { data: session, status } = useSession();
@@ -143,7 +143,12 @@ export default function CheckoutPage() {
       }
 
       const data = await res.json();
-      window.location.href = `/orders/${data.id}`;
+
+      // Clear the cart on success
+      clear();
+
+      // Redirect to success page
+      window.location.href = `/orders/${data.id}?success=true`;
     } catch (err: any) {
       setError(err.message);
       setPlacing(false);
