@@ -7,7 +7,7 @@ import type { CardProduct } from "@/lib/menu-helpers";
 import { useCart } from "@/lib/cart-context";
 
 const SPIN_MS = 3800;
-const SESSION_KEY = "thekindones-spinner-seen-v5"; // Version bump to force show
+const SESSION_KEY = "thekindones-spinner-claimed-v1"; // New key for persistent state
 const MAX_ITEMS = 8; // Increased slightly for better look
 
 export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
@@ -23,9 +23,13 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
   useEffect(() => {
     if (!items.length) return;
 
-    // Small delay for smooth entrance
-    const timer = setTimeout(() => setVisible(true), 1200);
-    return () => clearTimeout(timer);
+    // Check localStorage to avoid reappearing once dismissed or claimed
+    const seen = localStorage.getItem(SESSION_KEY);
+    if (!seen) {
+      // Small delay for smooth entrance
+      const timer = setTimeout(() => setVisible(true), 1500);
+      return () => clearTimeout(timer);
+    }
   }, [items]);
 
   const wheelItems = useMemo(() => {
@@ -88,7 +92,7 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
 
   const closeSpinner = () => {
     setVisible(false);
-    sessionStorage.setItem(SESSION_KEY, "true");
+    localStorage.setItem(SESSION_KEY, "true");
   };
 
   if (!visible) return null;
