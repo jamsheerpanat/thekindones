@@ -33,7 +33,7 @@ export const sendWelcomeEmail = async ({
             We're thrilled to have you join our community. Explore our menu and discover gourmet flavors crafted with care.
           </p>
           <div style="margin: 30px 0;">
-            <a href="${process.env.NEXTAUTH_URL || "https://octolabs.cloud"}/menu" style="background-color: #231d21; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block;">View Our Menu</a>
+            <a href="${process.env.NEXTAUTH_URL || "http://76.13.76.173:3000/tko"}/menu" style="background-color: #231d21; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block;">View Our Menu</a>
           </div>
           <p style="margin-top: 40px; font-size: 12px; color: #9CA3AF;">
             © ${new Date().getFullYear()} The Kind Ones • Gourmet Crafted
@@ -89,7 +89,7 @@ export const sendOrderConfirmation = async ({
           ` : ""}
 
           <div style="margin: 30px 0;">
-            <a href="${process.env.NEXTAUTH_URL || "https://octolabs.cloud"}/orders/${orderId}" style="background-color: #231d21; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block;">Track My Order</a>
+            <a href="${process.env.NEXTAUTH_URL || "http://76.13.76.173:3000/tko"}/orders/${orderId}" style="background-color: #231d21; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block;">Track My Order</a>
           </div>
           
           <p style="margin-top: 40px; font-size: 12px; color: #9CA3AF;">

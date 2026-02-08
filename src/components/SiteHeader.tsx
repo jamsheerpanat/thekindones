@@ -145,7 +145,7 @@ export const SiteHeader = () => {
                     </div>
                   </Link>
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => signOut({ callbackUrl: "/tko" })}
                     className="h-9 w-9 flex items-center justify-center rounded-full text-ink-500 hover:bg-ink-100 transition-colors"
                     title="Sign Out"
                   >
@@ -239,7 +239,7 @@ export const SiteHeader = () => {
                   </Link>
                   <button
                     onClick={() => {
-                      signOut();
+                      signOut({ callbackUrl: "/tko" });
                       setMobileMenuOpen(false);
                     }}
                     className="w-full btn py-5 text-red-600 font-bold bg-red-50 hover:bg-red-100/50"
