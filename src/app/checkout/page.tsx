@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
@@ -112,11 +112,20 @@ export default function CheckoutPage() {
   const [placing, setPlacing] = useState(false);
   const [error, setError] = useState("");
 
-  const handlePlaceOrder = async () => {
-    if (!session) {
-      signIn();
-      return;
+  // Guest/User details state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  // Autofetch user details when session changes
+  useEffect(() => {
+    if (session?.user) {
+      setName(session.user.name || "");
+      setEmail(session.user.email || "");
     }
+  }, [session]);
+
+  const handlePlaceOrder = async () => {
     setPlacing(true);
     setError("");
 
@@ -129,6 +138,7 @@ export default function CheckoutPage() {
         })),
         method,
         paymentMethod,
+        guest: !session ? { name, email, phone } : undefined
       };
 
       const res = await fetch("/api/orders", {
@@ -277,17 +287,33 @@ export default function CheckoutPage() {
                   <input
                     className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all disabled:opacity-60 disabled:bg-ink-100/50"
                     placeholder="john@example.com"
-                    defaultValue={session?.user?.email || ""}
-                    disabled={!!session?.user?.email}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={status === "authenticated"}
                   />
+                  {!session && (
+                    <p className="text-[10px] text-brand-600 font-bold uppercase tracking-tighter ml-1">
+                      Account will be created automatically
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-ink-400 ml-1">Full Name</label>
-                  <input className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all" placeholder="John Doe" defaultValue={session?.user?.name || ""} />
+                  <input
+                    className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-ink-400 ml-1">Phone Number</label>
-                  <input className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all" placeholder="+966 5..." />
+                  <input
+                    className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all"
+                    placeholder="+966 5..."
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
@@ -449,39 +475,25 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {status === "unauthenticated" ? (
-                <div className="mt-8 space-y-3">
-                  <button
-                    onClick={() => signIn()}
-                    className="w-full btn btn-primary py-4 text-base shadow-lg shadow-ink-900/20 hover:translate-y-[-2px] transition-transform"
-                  >
-                    Sign in to Pay
-                  </button>
-                  <p className="text-center text-xs text-ink-400 font-medium">
-                    Create an account securely to save your details.
-                  </p>
-                </div>
-              ) : (
-                <button
-                  className="w-full relative overflow-hidden group btn btn-primary mt-8 py-4 text-lg font-bold shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                  onClick={handlePlaceOrder}
-                  disabled={placing}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {placing ? (
-                      <>
-                        <Spinner size="sm" color="white" className="-ml-1 mr-2" />
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        {paymentMethod === "cash" ? "Place Order" : `Pay ${formatPrice(summary.total)}`}
-                      </>
-                    )}
-                  </span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                </button>
-              )}
+              <button
+                className="w-full relative overflow-hidden group btn btn-primary mt-8 py-4 text-lg font-bold shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                onClick={handlePlaceOrder}
+                disabled={placing}
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  {placing ? (
+                    <>
+                      <Spinner size="sm" color="white" className="-ml-1 mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      {paymentMethod === "cash" ? "Place Order" : `Pay ${formatPrice(summary.total)}`}
+                    </>
+                  )}
+                </span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              </button>
             </div>
 
             <div className="bg-ink-900 rounded-[2rem] p-8 text-white text-center relative overflow-hidden shadow-lg">

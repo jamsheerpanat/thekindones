@@ -3,6 +3,9 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { hashPassword } from "@/lib/password";
+import { sendOrderConfirmation } from "@/lib/email";
+import crypto from "crypto";
 
 export const runtime = "nodejs";
 
@@ -46,13 +49,44 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await requireUser();
-
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
+    const session = await getServerSession(authOptions);
     const body = await request.json();
+    const guestData = body.guest; // { email, name, phone }
+
+    let userId = session?.user?.id;
+    let tempPassword = "";
+
+    // If no session, handle automatic guest account creation
+    if (!session) {
+      if (!guestData?.email || !guestData?.name) {
+        return NextResponse.json(
+          { error: "Contact details are required for guest checkout." },
+          { status: 400 }
+        );
+      }
+
+      const email = guestData.email.toLowerCase().trim();
+
+      // Check if user exists
+      let user = await prisma.user.findUnique({ where: { email } });
+
+      if (!user) {
+        // Generate random temporary password
+        tempPassword = crypto.randomBytes(4).toString("hex").toUpperCase(); // e.g. "A1B2C3D4"
+        const hashedPassword = await hashPassword(tempPassword);
+
+        user = await prisma.user.create({
+          data: {
+            email,
+            name: guestData.name,
+            phone: guestData.phone,
+            password: hashedPassword,
+          }
+        });
+      }
+
+      userId = user.id;
+    }
     const items = Array.isArray(body.items) ? body.items : [];
 
     if (!items.length) {
@@ -113,15 +147,28 @@ export async function POST(request: Request) {
 
     const order = await prisma.order.create({
       data: {
-        userId: session.user.id,
+        userId,
         total: new Prisma.Decimal(total.toFixed(3)),
         currency: "KWD",
         items: {
           create: orderItems.filter(Boolean)
         }
       },
-      include: { items: true }
+      include: {
+        items: true,
+        user: true
+      }
     });
+
+    // Send order confirmation email in background
+    if (order.user?.email) {
+      sendOrderConfirmation({
+        email: order.user.email,
+        name: order.user.name || "Customer",
+        orderId: order.id,
+        tempPassword: tempPassword || undefined
+      }).catch(err => console.error("Order Email Error:", err));
+    }
 
     return NextResponse.json(
       {
