@@ -28,7 +28,7 @@ export default function SignInPage() {
       return;
     }
 
-    window.location.href = "/";
+    window.location.href = "/tko";
   };
 
   return (

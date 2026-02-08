@@ -22,8 +22,8 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const load = async () => {
       const [analyticsRes, ordersRes] = await Promise.all([
-        fetch("/api/admin/analytics"),
-        fetch("/api/admin/orders")
+        fetch("/tko/api/admin/analytics"),
+        fetch("/tko/api/admin/orders")
       ]);
       if (analyticsRes.ok) {
         setAnalytics(await analyticsRes.json());

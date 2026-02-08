@@ -27,7 +27,7 @@ export default function AdminMenuPage() {
   const [error, setError] = useState("");
 
   const load = async () => {
-    const res = await fetch("/api/admin/menu");
+    const res = await fetch("/tko/api/admin/menu");
     if (res.ok) {
       setItems(await res.json());
     }
@@ -41,7 +41,7 @@ export default function AdminMenuPage() {
     if (!form.name || !form.category || !form.price) return;
     setLoading(true);
     setError("");
-    await fetch("/api/admin/menu", {
+    await fetch("/tko/api/admin/menu", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

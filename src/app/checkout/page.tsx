@@ -141,7 +141,7 @@ export default function CheckoutPage() {
         guest: !session ? { name, email, phone } : undefined
       };
 
-      const res = await fetch("/api/orders", {
+      const res = await fetch("/tko/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -158,7 +158,7 @@ export default function CheckoutPage() {
       clear();
 
       // Redirect to success page
-      window.location.href = `/orders/${data.id}?success=true`;
+      window.location.href = `/tko/orders/${data.id}?success=true`;
     } catch (err: any) {
       setError(err.message);
       setPlacing(false);

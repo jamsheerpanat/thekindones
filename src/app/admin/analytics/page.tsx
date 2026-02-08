@@ -7,7 +7,7 @@ export default function AdminAnalyticsPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/admin/analytics");
+      const res = await fetch("/tko/api/admin/analytics");
       if (res.ok) {
         setData(await res.json());
       }

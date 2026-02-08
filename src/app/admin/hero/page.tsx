@@ -22,7 +22,7 @@ export default function HeroManagementPage() {
     });
 
     useEffect(() => {
-        fetch("/api/admin/hero")
+        fetch("/tko/api/admin/hero")
             .then((res) => res.json())
             .then((data) => {
                 if (data) setSettings(data);
@@ -39,7 +39,7 @@ export default function HeroManagementPage() {
         formData.append("file", file);
 
         try {
-            const res = await fetch("/api/upload", {
+            const res = await fetch("/tko/api/upload", {
                 method: "POST",
                 body: formData,
             });
@@ -60,7 +60,7 @@ export default function HeroManagementPage() {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch("/api/admin/hero", {
+            const res = await fetch("/tko/api/admin/hero", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(settings),

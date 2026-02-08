@@ -24,7 +24,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
 
   const load = async () => {
-    const res = await fetch("/api/admin/orders");
+    const res = await fetch("/tko/api/admin/orders");
     if (res.ok) {
       setOrders(await res.json());
     }

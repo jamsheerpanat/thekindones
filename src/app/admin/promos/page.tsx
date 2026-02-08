@@ -24,7 +24,7 @@ export default function AdminPromosPage() {
   const [loading, setLoading] = useState(false);
 
   const load = async () => {
-    const res = await fetch("/api/admin/promos");
+    const res = await fetch("/tko/api/admin/promos");
     if (res.ok) {
       setPromos(await res.json());
     }
@@ -37,7 +37,7 @@ export default function AdminPromosPage() {
   const handleCreate = async () => {
     if (!form.code || !form.amount) return;
     setLoading(true);
-    await fetch("/api/admin/promos", {
+    await fetch("/tko/api/admin/promos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
