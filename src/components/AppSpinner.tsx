@@ -100,42 +100,42 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
   const winner = selectedIndex !== null ? wheelItems[selectedIndex] : null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-md bg-white rounded-[2.5rem] p-6 md:p-10 shadow-2xl border border-white/40 overflow-hidden ring-1 ring-black/5 flex flex-col items-center">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="relative w-full max-w-[340px] md:max-w-md bg-white rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-2xl border border-white/40 overflow-hidden ring-1 ring-black/5 flex flex-col items-center my-auto">
 
         {/* Background Gradients */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-100/40 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-        {/* Close Button */}
+        {/* Close Button - Larger touch target */}
         <button
           onClick={closeSpinner}
-          className="absolute top-4 right-4 p-2 text-ink-400 hover:text-ink-900 hover:bg-ink-100/50 rounded-full transition-colors z-20"
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-ink-400 hover:text-ink-900 hover:bg-ink-100/50 rounded-full transition-colors z-20"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
         </button>
 
         {/* Content Header */}
-        <div className="text-center mb-8 relative z-10">
-          <h2 className="text-2xl font-display font-bold text-ink-900 leading-tight">
+        <div className="text-center mb-6 md:mb-8 relative z-10 w-full px-2">
+          <h2 className="text-xl md:text-2xl font-display font-bold text-ink-900 leading-tight">
             Feeling Lucky?
           </h2>
-          <p className="text-sm text-ink-500 mt-1">
-            Spin the wheel to get a curated recommendation!
+          <p className="text-xs md:text-sm text-ink-500 mt-1 md:mt-2">
+            Spin the wheel for a surprise deal!
           </p>
         </div>
 
-        {/* Wheel Container */}
-        <div className="relative w-64 h-64 md:w-80 md:h-80 mb-8 z-10 filter drop-shadow-xl">
+        {/* Wheel Container - Responsive Sizing */}
+        <div className="relative w-56 h-56 md:w-80 md:h-80 mb-6 md:mb-8 z-10 filter drop-shadow-2xl">
           {/* The Wheel */}
           <div
-            className="w-full h-full rounded-full border-4 border-white bg-white shadow-inner overflow-hidden relative transition-transform cubic-bezier(0.2, 0.8, 0.2, 1)"
+            className="w-full h-full rounded-full border-[3px] md:border-4 border-white bg-white shadow-inner overflow-hidden relative transition-transform cubic-bezier(0.2, 0.8, 0.2, 1)"
             style={{
               transform: `rotate(${rotation}deg)`,
               transitionDuration: spinning ? `${SPIN_MS}ms` : '0ms'
             }}
           >
-            {/* Segments Background (Conic) */}
+            {/* Segments Background */}
             <div className="absolute inset-0 rounded-full opacity-30"
               style={{ background: `conic-gradient(from 0deg, #f1c652, #e4e6e5, #f1c652, #e4e6e5, #f1c652, #e4e6e5, #f1c652, #e4e6e5)` }}
             />
@@ -146,19 +146,19 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
               return (
                 <div
                   key={index}
-                  className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-white/40 origin-bottom"
+                  className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-white/60 origin-bottom"
                   style={{ transform: `translateX(-50%) rotate(${angle}deg)` }}
                 >
                   {/* Item Icon */}
                   <div
-                    className="absolute top-4 left-1/2 -translate-x-1/2 -translate-y-0"
-                    style={{ transform: `translateX(-50%) rotate(${-angle}deg)` }} // Counter-rotate content? No, we want it aligned with segment
+                    className="absolute top-3 md:top-4 left-1/2 -translate-x-1/2"
+                    style={{ transform: `translateX(-50%) rotate(${-angle}deg)` }}
                   >
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-sm p-1 flex items-center justify-center transform -rotate-0">
+                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white shadow-md p-1 flex items-center justify-center ring-1 ring-black/5">
                       {item?.image ? (
                         <Image src={item.image} alt="item" width={40} height={40} className="rounded-full object-cover w-full h-full" />
                       ) : (
-                        <span className="text-xs font-bold text-ink-400">?</span>
+                        <span className="text-[10px] md:text-xs font-bold text-ink-400">?</span>
                       )}
                     </div>
                   </div>
@@ -167,48 +167,54 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
             })}
 
             {/* Center Hub */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-brand-100 flex items-center justify-center z-20">
-              <div className="w-10 h-10 bg-brand-500 rounded-full shadow-inner flex items-center justify-center">
-                <span className="text-[10px] font-black text-white uppercase tracking-wider">Spin</span>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-white rounded-full shadow-lg border-[3px] md:border-4 border-brand-100 flex items-center justify-center z-20">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-brand-500 rounded-full shadow-inner flex items-center justify-center">
+                <span className="text-[8px] md:text-[10px] font-black text-white uppercase tracking-tighter md:tracking-wider">Spin</span>
               </div>
             </div>
           </div>
 
-          {/* Pointer (Static at top) */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-30 filter drop-shadow-md">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-ink-900">
+          {/* Pointer */}
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 filter drop-shadow-md">
+            <svg width="24" height="24" md:width="32" md:height="32" viewBox="0 0 24 24" fill="currentColor" className="text-ink-900">
               <path d="M12 22L7 12H17L12 22Z" transform="rotate(180 12 12)" />
             </svg>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="w-full relative z-10 flex flex-col items-center gap-3 min-h-[80px]">
+        <div className="w-full relative z-10 flex flex-col items-center gap-3">
           {!showResult ? (
             <button
               onClick={handleSpin}
               disabled={spinning}
-              className="w-full btn btn-primary py-3.5 text-lg font-bold shadow-lg shadow-brand-500/20 active:scale-95 transition-all text-white"
+              className="w-full btn btn-primary py-4 text-sm md:text-lg font-black shadow-xl shadow-brand-500/30 active:scale-[0.98] transition-all text-white tracking-widest uppercase"
             >
-              {spinning ? "Spinning..." : "Press to Spin!"}
+              {spinning ? "Spinning..." : "Tap to Spin!"}
             </button>
           ) : (
             <div className="w-full animate-fade-up text-center space-y-4">
-              <div className="bg-brand-50 border border-brand-100 rounded-xl p-3 flex items-center gap-3 text-left">
-                <div className="w-12 h-12 bg-white rounded-lg flex-shrink-0 relative overflow-hidden shadow-sm">
+              <div className="bg-brand-500/5 border border-brand-500/10 rounded-2xl p-3 md:p-4 flex items-center gap-4 text-left shadow-inner">
+                <div className="w-14 h-14 bg-white rounded-xl flex-shrink-0 relative overflow-hidden shadow-soft border border-white">
                   {winner?.image && <Image src={winner.image} alt="winner" fill className="object-cover" />}
                 </div>
                 <div>
-                  <p className="text-xs text-brand-600 font-bold uppercase tracking-wider">You won!</p>
-                  <p className="text-sm font-bold text-ink-900 line-clamp-1">{winner?.name}</p>
+                  <p className="text-[10px] font-black text-brand-600 uppercase tracking-widest">You won!</p>
+                  <p className="text-sm md:text-base font-bold text-ink-900 line-clamp-1">{winner?.name}</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <button onClick={handleClaim} className="btn btn-primary w-full py-3 text-sm">
-                  Order Now
+              <div className="grid grid-cols-2 gap-3 pb-2">
+                <button
+                  onClick={handleClaim}
+                  className="btn btn-primary w-full py-4 text-xs font-bold uppercase tracking-widest shadow-lg shadow-ink-900/10"
+                >
+                  Claim Now
                 </button>
-                <button onClick={closeSpinner} className="btn btn-outline w-full py-3 text-sm">
+                <button
+                  onClick={closeSpinner}
+                  className="btn btn-outline w-full py-4 text-xs font-bold uppercase tracking-widest"
+                >
                   Maybe Later
                 </button>
               </div>
@@ -218,12 +224,14 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
 
         {/* Footer Note */}
         {!showResult && !spinning && (
-          <p className="mt-6 text-xs text-ink-400 text-center relative z-10">
-            Daily pick refresh at midnight.
+          <p className="mt-4 md:mt-6 text-[10px] font-medium text-ink-300 text-center relative z-10 uppercase tracking-widest">
+            Winner adds automatically to cart
           </p>
         )}
 
       </div>
     </div>
+  );
+};
   );
 };

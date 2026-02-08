@@ -40,8 +40,8 @@ export const SiteHeader = () => {
       >
         <header
           className={`pointer-events-auto relative flex items-center justify-between gap-4 px-3 py-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${scrolled
-              ? "w-[90%] md:w-[85%] max-w-5xl rounded-full bg-white/70 backdrop-blur-xl border border-white/50 shadow-lg shadow-ink-900/5 ring-1 ring-black/5"
-              : "w-[95%] max-w-7xl rounded-full bg-white/40 backdrop-blur-sm border border-white/30"
+            ? "w-[90%] md:w-[85%] max-w-5xl rounded-full bg-white/70 backdrop-blur-xl border border-white/50 shadow-lg shadow-ink-900/5 ring-1 ring-black/5"
+            : "w-[95%] max-w-7xl rounded-full bg-white/40 backdrop-blur-sm border border-white/30"
             }`}
         >
           {/* Left: Logo */}
@@ -58,8 +58,8 @@ export const SiteHeader = () => {
                   key={item.href}
                   href={item.href}
                   className={`relative px-5 py-2.5 text-[13px] font-semibold tracking-wide transition-all duration-300 rounded-full ${active
-                      ? "text-ink-900 bg-white shadow-sm ring-1 ring-black/5"
-                      : "text-ink-600 hover:text-ink-900 hover:bg-white/50"
+                    ? "text-ink-900 bg-white shadow-sm ring-1 ring-black/5"
+                    : "text-ink-600 hover:text-ink-900 hover:bg-white/50"
                     }`}
                 >
                   {item.label}
@@ -189,47 +189,71 @@ export const SiteHeader = () => {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl md:hidden animate-in fade-in slide-in-from-bottom-5 duration-300 flex flex-col pt-32 px-8">
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-8 right-8 p-2 bg-ink-50 rounded-full text-ink-500 hover:bg-ink-100"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
-          </button>
+        <div className="fixed inset-0 z-[60] bg-white/98 backdrop-blur-2xl md:hidden animate-in fade-in slide-in-from-bottom-5 duration-500 flex flex-col pt-24 px-8">
+          {/* Header in Overlay */}
+          <div className="absolute top-6 left-6 right-6 flex items-center justify-between">
+            <Logo size="sm" />
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-12 h-12 flex items-center justify-center bg-ink-50 rounded-full text-ink-900 shadow-sm active:scale-90 transition-transform"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+            </button>
+          </div>
 
-          <nav className="flex flex-col gap-6 text-center">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl font-display font-medium text-ink-900 hover:text-brand-600 transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-            {status !== "authenticated" ? (
-              <button
-                onClick={() => {
-                  signIn();
-                  setMobileMenuOpen(false);
-                }}
-                className="mt-8 btn btn-primary w-full"
-              >
-                Sign In
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  signOut();
-                  setMobileMenuOpen(false);
-                }}
-                className="mt-8 btn btn-outline w-full text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
-              >
-                Log Out
-              </button>
-            )}
-          </nav>
+          <div className="flex flex-col h-full justify-center">
+            <nav className="flex flex-col gap-8 text-center mb-12">
+              <p className="text-[10px] font-black text-ink-300 uppercase tracking-[0.3em] mb-4">Main Menu</p>
+              {NAV_ITEMS.map((item, idx) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-3xl font-display font-black text-ink-900 hover:text-brand-600 active:scale-95 transition-all animate-in fade-in slide-in-from-bottom-2"
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+              {status !== "authenticated" ? (
+                <button
+                  onClick={() => {
+                    signIn();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full btn btn-primary py-5 text-lg shadow-xl shadow-ink-900/20"
+                >
+                  Sign In to Order
+                </button>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full btn btn-outline py-5 text-lg"
+                  >
+                    My Account
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full btn py-5 text-red-600 font-bold bg-red-50 hover:bg-red-100/50"
+                  >
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <p className="mt-auto pb-12 text-center text-[10px] font-bold text-ink-300 uppercase tracking-widest">
+              © 2025 The Kind Ones • Gourmet Crafted
+            </p>
+          </div>
         </div>
       )}
     </>

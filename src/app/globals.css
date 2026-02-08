@@ -126,18 +126,46 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Custom Scrollbar for desktop */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-ink-200 rounded-full;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @media (max-width: 768px) {
   body {
-    background: #f7f5f2;
+    background: #fdfdfd;
   }
 
   .card {
-    border-radius: 1.5rem;
+    border-radius: 2rem;
   }
 
-  .chip {
-    font-size: 0.7rem;
+  .btn {
+    @apply py-4; /* Larger tap area on mobile */
+  }
+
+  .section {
+    @apply py-8;
+  }
+
+  h1 { @apply text-3xl font-black; }
+  h2 { @apply text-2xl font-black; }
+  h3 { @apply text-xl font-bold; }
+
+  /* Better active/tap states for mobile */
+  .active-scale:active {
+    transform: scale(0.96);
   }
 }
