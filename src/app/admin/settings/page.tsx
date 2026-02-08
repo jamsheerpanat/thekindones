@@ -1,3 +1,5 @@
+"use client";
+
 export default function AdminSettingsPage() {
   return (
     <div className="card p-6">
