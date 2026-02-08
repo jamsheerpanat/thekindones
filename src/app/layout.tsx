@@ -31,12 +31,21 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const featuredItems = await prisma.menuItem.findMany({
+  let featuredItems = await prisma.menuItem.findMany({
     where: { featured: true, active: true },
     include: { category: true },
     orderBy: { updatedAt: "desc" },
     take: 7
   });
+
+  // Fallback if no items are explicitly featured
+  if (featuredItems.length === 0) {
+    featuredItems = await prisma.menuItem.findMany({
+      where: { active: true },
+      include: { category: true },
+      take: 7
+    });
+  }
 
   const spinnerItems = featuredItems.map((item) => toCardProduct(item));
 

@@ -23,13 +23,9 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
   useEffect(() => {
     if (!items.length) return;
 
-    // Check session storage to avoid annoyance
-    const seen = sessionStorage.getItem(SESSION_KEY);
-    if (!seen) {
-      // Small delay for smooth entrance
-      const timer = setTimeout(() => setVisible(true), 800);
-      return () => clearTimeout(timer);
-    }
+    // Small delay for smooth entrance
+    const timer = setTimeout(() => setVisible(true), 1200);
+    return () => clearTimeout(timer);
   }, [items]);
 
   const wheelItems = useMemo(() => {

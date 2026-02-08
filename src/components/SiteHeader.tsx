@@ -40,8 +40,8 @@ export const SiteHeader = () => {
       >
         <header
           className={`pointer-events-auto relative flex items-center justify-between gap-4 px-3 py-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${scrolled
-            ? "w-[90%] md:w-[85%] max-w-5xl rounded-full bg-white/70 backdrop-blur-xl border border-white/50 shadow-lg shadow-ink-900/5 ring-1 ring-black/5"
-            : "w-[95%] max-w-7xl rounded-full bg-white/40 backdrop-blur-sm border border-white/30"
+            ? "w-[90%] md:w-[85%] max-w-5xl rounded-full bg-brand-500 backdrop-blur-xl border border-white/50 shadow-lg shadow-brand-900/10 ring-1 ring-black/5"
+            : "w-[95%] max-w-7xl rounded-full bg-brand-500/90 backdrop-blur-sm border border-white/30"
             }`}
         >
           {/* Left: Logo */}
