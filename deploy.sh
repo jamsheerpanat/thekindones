@@ -36,6 +36,7 @@ fi
 echo "🌐 Step 2: Connecting to VPS ($VPS_IP) for deployment..."
 
 ssh -t $VPS_USER@$VPS_IP << EOF
+  set -e
   cd $VPS_PATH
   
   echo "📥 Pulling latest code from GitHub..."
@@ -52,7 +53,10 @@ ssh -t $VPS_USER@$VPS_IP << EOF
   npm run build
   
   echo "🔄 Restarting application with PM2..."
-  pm2 restart $PM2_NAME
+  pm2 restart $PM2_NAME || pm2 start npm --name "$PM2_NAME" -- start
+  
+  echo "🔍 Checking Nginx status..."
+  sudo systemctl status nginx --no-pager
   
   echo "✅ Deployment on VPS finished successfully!"
   exit
