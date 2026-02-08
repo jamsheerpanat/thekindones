@@ -25,10 +25,13 @@ sudo apt install certbot python3-certbot-nginx -y
 
 ## 2. Deploying "The Kind Ones" (Website #1)
 
-### Step A: Transfer Project Logic
-Upload your project files to the VPS (e.g., to `/var/www/thekindones`).
-*   **Method 1 (Git):** Push your code to GitHub, then `git clone` on the VPS.
-*   **Method 2 (SFTP):** Use FileZilla or `scp` to copy files directly.
+### Step A: Clone the Repository
+On your VPS, navigate to the web directory and clone your repository:
+```bash
+cd /var/www
+git clone https://github.com/jamsheerpanat/thekindones.git
+```
+This will create a folder at `/var/www/thekindones`.
 
 ### Step B: Build & Setup
 On the VPS, navigate to your project folder:
