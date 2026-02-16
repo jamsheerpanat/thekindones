@@ -127,6 +127,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       current.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item))
     );
   };
+  const clear = () => setItems([]);
 
   const summary = useMemo(() => {
     const gov = governorates.find(g => g.id === selectedGovernorate);
