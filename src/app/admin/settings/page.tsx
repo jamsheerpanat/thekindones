@@ -39,7 +39,7 @@ export default function AdminSettingsPage() {
             <p className="text-xs font-bold uppercase tracking-wider text-red-600 mb-2">Database Management</p>
             <p className="text-sm text-ink-600 mb-4">Wipe all registered users and reset the database.</p>
             <a
-              href="/tko/api/admin/clear-users?secret=clear_all_users_2025"
+              href="/api/admin/clear-users?secret=clear_all_users_2025"
               className="btn bg-red-600 text-white hover:bg-red-700 py-2 inline-block text-center w-full shadow-sm"
               onClick={(e) => {
                 if (!confirm("ARE YOU SURE? This will delete all users!")) e.preventDefault();
@@ -52,7 +52,7 @@ export default function AdminSettingsPage() {
           <div className="card border border-brand-200 bg-brand-50/30 p-4">
             <p className="text-xs font-bold uppercase tracking-wider text-brand-700 mb-2">Email Testing</p>
             <p className="text-sm text-ink-600 mb-4">Send a diagnostic email to trace connectivity with Resend.</p>
-            <form action="/tko/api/admin/test-email" method="GET" className="space-y-2">
+            <form action="/api/admin/test-email" method="GET" className="space-y-2">
               <input type="hidden" name="secret" value="test_email_2025" />
               <input
                 type="email"

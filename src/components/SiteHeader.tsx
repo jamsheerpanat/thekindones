@@ -145,7 +145,7 @@ export const SiteHeader = () => {
                     </div>
                   </Link>
                   <button
-                    onClick={() => signOut({ callbackUrl: "/tko" })}
+                    onClick={() => signOut({ callbackUrl: "/" })}
                     className="h-9 w-9 flex items-center justify-center rounded-full text-ink-500 hover:bg-ink-100 transition-colors"
                     title="Sign Out"
                   >
@@ -154,7 +154,7 @@ export const SiteHeader = () => {
                 </div>
               ) : (
                 <button
-                  onClick={() => signIn(undefined, { callbackUrl: "/tko" })}
+                  onClick={() => signIn(undefined, { callbackUrl: "/" })}
                   className="hidden md:flex h-10 px-6 items-center justify-center rounded-full bg-ink-900 text-white text-[13px] font-bold tracking-wide hover:bg-ink-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Sign In
@@ -221,7 +221,7 @@ export const SiteHeader = () => {
               {status !== "authenticated" ? (
                 <button
                   onClick={() => {
-                    signIn(undefined, { callbackUrl: "/tko" });
+                    signIn(undefined, { callbackUrl: "/" });
                     setMobileMenuOpen(false);
                   }}
                   className="w-full btn btn-primary py-5 text-lg shadow-xl shadow-ink-900/20"
@@ -239,7 +239,7 @@ export const SiteHeader = () => {
                   </Link>
                   <button
                     onClick={() => {
-                      signOut({ callbackUrl: "/tko" });
+                      signOut({ callbackUrl: "/" });
                       setMobileMenuOpen(false);
                     }}
                     className="w-full btn py-5 text-red-600 font-bold bg-red-50 hover:bg-red-100/50"

@@ -94,6 +94,6 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    signIn: "/tko/auth/sign-in"
+    signIn: "/auth/sign-in"
   }
 };

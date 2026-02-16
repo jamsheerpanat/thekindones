@@ -28,7 +28,7 @@ export default function SignInPage() {
       return;
     }
 
-    window.location.href = "/tko";
+    window.location.href = "/";
   };
 
   return (
@@ -43,14 +43,14 @@ export default function SignInPage() {
           <div className="mt-6 grid gap-3">
             <button
               className="btn btn-outline"
-              onClick={() => signIn("google", { callbackUrl: "/tko" })}
+              onClick={() => signIn("google", { callbackUrl: "/" })}
               type="button"
             >
               Continue with Google
             </button>
             <button
               className="btn btn-outline"
-              onClick={() => signIn("github", { callbackUrl: "/tko" })}
+              onClick={() => signIn("github", { callbackUrl: "/" })}
               type="button"
             >
               Continue with GitHub

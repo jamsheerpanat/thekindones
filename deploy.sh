@@ -62,4 +62,4 @@ ssh -t $VPS_USER@$VPS_IP << EOF
   exit
 EOF
 
-echo "✨ All Done! Your changes are live at https://octolabs.cloud"
+echo "✨ All Done! Your changes are live at https://tko.octolabs.cloud"

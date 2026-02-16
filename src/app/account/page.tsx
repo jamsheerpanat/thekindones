@@ -18,7 +18,7 @@ export default function AccountPage() {
   useEffect(() => {
     if (status !== "authenticated") return;
     const load = async () => {
-      const res = await fetch("/tko/api/orders");
+      const res = await fetch("/api/orders");
       if (res.ok) {
         setOrders(await res.json());
       }

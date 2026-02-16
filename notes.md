@@ -19,10 +19,10 @@
 ## 2. Live Deployment Details
 The application is currently hosted on a VPS and served via a specific IP and subpath.
 
-- **Base URL:** `http://76.13.76.173:3000/tko`
+- **Base URL:** `https://tko.octolabs.cloud`
 - **Server IP:** `76.13.76.173`
 - **Port:** `3000`
-- **Subpath:** `/tko` (Configured in `next.config.js`)
+- **Subpath:** None (App runs at root domain)
 - **Deployment Script:** `./deploy.sh` (Automates git push & server reload)
 
 **Note on Nginx:**
@@ -60,7 +60,7 @@ While Nginx is installed on the server, the application is currently accessed di
 Ensure these are set on both local and server:
 ```bash
 DATABASE_URL="file:./dev.db"
-NEXTAUTH_URL="http://76.13.76.173:3000/tko" # IMPORTANT: Must match access URL
+NEXTAUTH_URL="https://tko.octolabs.cloud" # IMPORTANT: Must match access URL
 NEXTAUTH_SECRET="[REDACTED]"
 ADMIN_EMAILS="admin@thekindones.com,admin@octolabs.cloud,jamsheerpanat@gmail.com"
 RESEND_API_KEY="re_..." # Required for emails
@@ -105,7 +105,7 @@ npx prisma migrate dev # Create migrations
 
 ## 6. Valid URLs for Third-Party Logins
 If you re-enable Google/GitHub headers, ensure these Authorized Redirect URIs are set in their developer consoles:
-- **Google/GitHub Callback:** `http://76.13.76.173:3000/tko/api/auth/callback/google` (and `github`)
+- **Google/GitHub Callback:** `https://tko.octolabs.cloud/api/auth/callback/google` (and `github`)
 
 ---
 

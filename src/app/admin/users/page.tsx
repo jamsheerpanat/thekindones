@@ -20,7 +20,7 @@ export default function UsersPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("/tko/api/admin/users")
+        fetch("/api/admin/users")
             .then((res) => res.json())
             .then((data) => {
                 if (Array.isArray(data)) setUsers(data);
@@ -32,7 +32,7 @@ export default function UsersPage() {
         if (!window.confirm(`Are you sure you want to make this user ${newRole}?`)) return;
 
         try {
-            const res = await fetch(`/tko/api/admin/users`, {
+            const res = await fetch(`/api/admin/users`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userId, role: newRole })
