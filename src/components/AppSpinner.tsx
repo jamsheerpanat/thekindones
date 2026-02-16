@@ -23,8 +23,8 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
   useEffect(() => {
     if (!items.length) return;
 
-    // Check localStorage to avoid reappearing once dismissed or claimed
-    const seen = localStorage.getItem(SESSION_KEY);
+    // Check sessionStorage to avoid reappearing once dismissed or claimed in the same session
+    const seen = sessionStorage.getItem(SESSION_KEY);
     if (!seen) {
       // Small delay for smooth entrance
       const timer = setTimeout(() => setVisible(true), 1500);
@@ -78,7 +78,7 @@ export const AppSpinner = ({ items }: { items: CardProduct[] }) => {
 
   const closeSpinner = () => {
     setVisible(false);
-    localStorage.setItem(SESSION_KEY, "true");
+    sessionStorage.setItem(SESSION_KEY, "true");
   };
 
   if (!visible) return null;
