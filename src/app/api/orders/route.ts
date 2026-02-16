@@ -119,36 +119,49 @@ export async function POST(request: Request) {
     let total = 0;
     const orderItems = items.map((item: any) => {
       const menuItem = menuMap.get(item.menuItemId);
-      if (!menuItem) {
-        return null; // Should not happen given check above
-      }
+      if (!menuItem) return null;
 
       const quantity = Math.max(1, Number(item.quantity || 1));
       const price = Number(menuItem.price);
 
-      // Add base price * quantity
-      let lineTotal = price * quantity;
+      // Calculate unit price with modifiers
+      let unitPrice = price;
+      if (item.modifiers && Array.isArray(item.modifiers)) {
+        unitPrice += item.modifiers.reduce((sum: number, mod: any) => sum + (mod.priceDelta || 0), 0);
+      }
 
-      // If modifiers affect price, add/subtract here (simplified implementation)
-      // Note: Real implementation would validate modifiers too
-      // For now, assume modifiers don't change price OR price is calculated client-side (bad) and verified here?
-      // The original logic just summed base price. Let's stick to that for now, but really modifiers should be checked.
-
-      total += lineTotal;
+      total += unitPrice * quantity;
 
       return {
         menuItemId: menuItem.id,
         name: menuItem.name,
-        price: new Prisma.Decimal(price),
+        price: new Prisma.Decimal(unitPrice),
         quantity,
         modifiers: item.modifiers ? JSON.stringify(item.modifiers) : null
       };
     });
 
+    // Calculate delivery fee
+    let deliveryFee = 0;
+    let governorateName = null;
+    if (body.method === "delivery" && body.governorateId) {
+      const gov = await prisma.governorate.findUnique({
+        where: { id: body.governorateId }
+      });
+      if (gov) {
+        deliveryFee = Number(gov.deliveryFee);
+        governorateName = gov.name;
+      }
+    }
+
+    const grandTotal = total + deliveryFee;
+
     const order = await prisma.order.create({
       data: {
         userId,
-        total: new Prisma.Decimal(total.toFixed(3)),
+        total: new Prisma.Decimal(grandTotal.toFixed(3)),
+        deliveryFee: new Prisma.Decimal(deliveryFee.toFixed(3)),
+        deliveryGovernorate: governorateName,
         currency: "KWD",
         items: {
           create: orderItems.filter(Boolean)

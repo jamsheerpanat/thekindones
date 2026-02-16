@@ -15,8 +15,6 @@ export type CartItem = {
 type CartSummary = {
   subtotal: number;
   deliveryFee: number;
-  serviceFee: number;
-  tax: number;
   total: number;
 };
 
@@ -29,6 +27,9 @@ type CartContextValue = {
   summary: CartSummary;
   notification: string | null;
   showNotification: (message: string) => void;
+  governorates: any[];
+  selectedGovernorate: string | null;
+  setGovernorate: (id: string | null) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -40,28 +41,32 @@ const calculateItemTotal = (item: CartItem) => {
   return (item.product.price + modifierTotal) * item.quantity;
 };
 
-const calculateSummary = (items: CartItem[]): CartSummary => {
+const calculateSummary = (items: CartItem[], deliveryFee: number): CartSummary => {
   const subtotal = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const deliveryFee = subtotal > 0 ? 3.5 : 0;
-  const serviceFee = subtotal > 0 ? Math.min(6, subtotal * 0.08) : 0;
-  const tax = subtotal > 0 ? subtotal * 0.085 : 0;
   return {
     subtotal,
     deliveryFee,
-    serviceFee,
-    tax,
-    total: subtotal + deliveryFee + serviceFee + tax
+    total: subtotal + deliveryFee
   };
 };
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [notification, setNotification] = useState<string | null>(null);
+  const [governorates, setGovernorates] = useState<any[]>([]);
+  const [selectedGovernorate, setSelectedGovernorate] = useState<string | null>(null);
 
   const showNotification = (message: string) => {
     setNotification(message);
     setTimeout(() => setNotification(null), 3000);
   };
+
+  useEffect(() => {
+    fetch("/api/governorates")
+      .then(res => res.json())
+      .then(data => setGovernorates(data))
+      .catch(err => console.error("Failed to load governorates", err));
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -123,13 +128,27 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const clear = () => setItems([]);
-
-  const summary = useMemo(() => calculateSummary(items), [items]);
+  const summary = useMemo(() => {
+    const gov = governorates.find(g => g.id === selectedGovernorate);
+    const fee = gov ? Number(gov.deliveryFee) : 0;
+    return calculateSummary(items, fee);
+  }, [items, selectedGovernorate, governorates]);
 
   const value = useMemo(
-    () => ({ items, addItem, removeItem, updateQuantity, clear, summary, notification, showNotification }),
-    [items, summary, notification]
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clear,
+      summary,
+      notification,
+      showNotification,
+      governorates,
+      selectedGovernorate,
+      setGovernorate: setSelectedGovernorate
+    }),
+    [items, summary, notification, governorates, selectedGovernorate]
   );
 
   return (

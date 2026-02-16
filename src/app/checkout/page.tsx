@@ -105,7 +105,7 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function CheckoutPage() {
-  const { items, summary, clear } = useCart();
+  const { items, summary, clear, governorates, selectedGovernorate, setGovernorate } = useCart();
   const [method, setMethod] = useState<"delivery" | "pickup">("delivery");
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cash">("card");
   const { data: session, status } = useSession();
@@ -138,6 +138,7 @@ export default function CheckoutPage() {
         })),
         method,
         paymentMethod,
+        governorateId: method === "delivery" ? selectedGovernorate : undefined,
         guest: !session ? { name, email, phone } : undefined
       };
 
@@ -249,8 +250,20 @@ export default function CheckoutPage() {
                       <input className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all" placeholder="123 King Fahd Rd" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-ink-400 ml-1">Building</label>
-                      <input className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all" placeholder="Building 5" />
+                      <label className="text-xs font-bold uppercase tracking-wider text-ink-400 ml-1">Governorate</label>
+                      <select
+                        className="input h-12 bg-ink-50/30 border-ink-200 focus:bg-white focus:border-ink-900 transition-all w-full"
+                        value={selectedGovernorate || ""}
+                        onChange={(e) => setGovernorate(e.target.value)}
+                        required={method === "delivery"}
+                      >
+                        <option value="">Select Governorate</option>
+                        {governorates.map((gov) => (
+                          <option key={gov.id} value={gov.id}>
+                            {gov.name} ({formatPrice(Number(gov.deliveryFee))})
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-ink-400 ml-1">Apartment / Unit</label>
@@ -452,12 +465,8 @@ export default function CheckoutPage() {
                   <span className="text-ink-900">{formatPrice(summary.subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-ink-500 font-medium">
-                  <span>Fees</span>
-                  <span className="text-ink-900">{formatPrice(summary.deliveryFee + summary.serviceFee)}</span>
-                </div>
-                <div className="flex justify-between text-sm text-ink-500 font-medium">
-                  <span>Tax (Included)</span>
-                  <span className="text-ink-900">{formatPrice(summary.tax)}</span>
+                  <span>Delivery Fee</span>
+                  <span className="text-ink-900">{formatPrice(summary.deliveryFee)}</span>
                 </div>
 
                 <div className="pt-4 mt-2 border-t border-ink-100">
