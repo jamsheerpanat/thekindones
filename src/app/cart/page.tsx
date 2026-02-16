@@ -85,7 +85,7 @@ export default function CartPage() {
                             (sum, option) => sum + (option.priceDelta || 0),
                             0
                           )) *
-                          item.quantity
+                        item.quantity
                       )}
                     </span>
                   </div>
@@ -106,14 +106,7 @@ export default function CartPage() {
               <span className="text-ink-500">Delivery fee</span>
               <span>{formatPrice(summary.deliveryFee)}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-ink-500">Service fee</span>
-              <span>{formatPrice(summary.serviceFee)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-ink-500">Tax</span>
-              <span>{formatPrice(summary.tax)}</span>
-            </div>
+
             <div className="flex items-center justify-between border-t border-ink-100 pt-3 text-base font-semibold">
               <span>Total</span>
               <span>{formatPrice(summary.total)}</span>
